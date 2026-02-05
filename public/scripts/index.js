@@ -1,55 +1,74 @@
-// Initialize Lucide Icons
-lucide.createIcons();
+document.addEventListener('DOMContentLoaded', () => {
+  // Initialize Icons
+  if (typeof lucide !== 'undefined') {
+    lucide.createIcons();
+  }
 
-// Smooth Scrolling Function
-function scrollToSection(id) {
-    const element = document.getElementById(id);
-    if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
-    }
-}
+  // Mobile Menu Toggle
+  const menuBtn = document.getElementById('menu-toggle-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const menuIcon = document.getElementById('menu-icon');
+  const closeIcon = document.getElementById('close-icon');
 
-// Mobile Menu Toggle
-const menuToggle = document.getElementById('menuToggle');
-const mobileMenu = document.getElementById('mobileMenu');
-
-function toggleMenu() {
-    mobileMenu.classList.toggle('active');
-    const icon = menuToggle.querySelector('i');
-    if (mobileMenu.classList.contains('active')) {
-        icon.setAttribute('data-lucide', 'x');
+  const toggleMenu = (forceClose = false) => {
+    const isOpen = forceClose ? true : mobileMenu.classList.contains('open');
+    if (isOpen) {
+      mobileMenu.classList.remove('open');
+      menuIcon.classList.remove('hidden');
+      closeIcon.classList.add('hidden');
+      mobileMenu.setAttribute('aria-hidden', 'true');
     } else {
-        icon.setAttribute('data-lucide', 'menu');
+      mobileMenu.classList.add('open');
+      menuIcon.classList.add('hidden');
+      closeIcon.classList.remove('hidden');
+      mobileMenu.setAttribute('aria-hidden', 'false');
     }
-    lucide.createIcons(); // Re-render icons
-}
+  };
 
-menuToggle.addEventListener('click', toggleMenu);
+  menuBtn?.addEventListener('click', () => toggleMenu());
 
-// Form Submission Logic
-const leadForm = document.getElementById('leadForm');
-const successMessage = document.getElementById('successMessage');
+  // Navigation Logic (Smooth Scroll)
+  const scrollButtons = document.querySelectorAll('[data-scroll]');
+  
+  scrollButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetId = btn.getAttribute('data-scroll');
+      const targetElement = document.getElementById(targetId);
+      
+      if (targetElement) {
+        // Close menu if it's open
+        toggleMenu(true);
+        
+        targetElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    });
+  });
 
-leadForm.addEventListener('submit', function(e) {
+  // Logo Clicks (Back to top)
+  const logos = [document.getElementById('logo-home'), document.getElementById('footer-logo')];
+  logos.forEach(logo => {
+    logo?.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+
+  // Waitlist Form Handling
+  const leadForm = document.getElementById('lead-form');
+  const successScreen = document.getElementById('success-screen');
+
+  leadForm?.addEventListener('submit', (e) => {
     e.preventDefault();
     
-    // In a real app, you would send data to a server here
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    
-    console.log("Form Submitted:", { name, email });
-
-    // Hide form and show success message
+    // Simulate submission
     leadForm.classList.add('hidden');
-    successMessage.classList.remove('hidden');
-});
-
-// Optional: Change Navbar opacity on scroll
-window.addEventListener('scroll', () => {
-    const navbar = document.querySelector('.navbar');
-    if (window.scrollY > 50) {
-        navbar.style.background = 'rgba(12, 10, 9, 0.95)';
-    } else {
-        navbar.style.background = 'rgba(12, 10, 9, 0.8)';
+    successScreen?.classList.remove('hidden');
+    
+    // Smooth scroll into view if on mobile
+    if (window.innerWidth < 1024) {
+      successScreen.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
+  });
 });

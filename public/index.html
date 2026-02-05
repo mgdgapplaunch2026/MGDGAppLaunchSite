@@ -1,247 +1,339 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MGDG | Secure Digital Gold Ownership</title>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
-    <!-- Fonts -->
+    <!-- SEO Primary Tags -->
+    <title>MGDG | Secure Digital Gold Ownership & Sovereign Reserves</title>
+    <meta name="description" content="MGDG provides 1:1 physically allocated gold ownership via a premium digital interface. Experience timeless resilience with sovereign-grade custody and global liquidity." />
+    <meta name="keywords" content="digital gold, physical gold, asset management, gold custody, sovereign reserves, wealth preservation, MGDG protocol" />
+    <meta name="robots" content="index, follow" />
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="MGDG | Secure Digital Gold Ownership" />
+    <meta property="og:description" content="Secure your future with timeless resilience. 1:1 physically allocated gold in Tier-1 global vaults." />
+    <meta property="og:image" content="https://images.unsplash.com/photo-1610375461246-83df859d849d?auto=format&fit=crop&q=80&w=1200" />
+    <meta property="og:url" content="https://mgdg.io" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <!-- LLMO / Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FinancialService",
+      "name": "MGDG Protocol",
+      "alternateName": "Modern Gold Digital Gold",
+      "description": "A secure digital gold ownership platform providing 1:1 physical allocation in sovereign-grade, non-bank vaults.",
+      "url": "https://mgdg.io",
+      "logo": "https://mgdg.io/logo.png",
+      "serviceType": "Digital Gold Custody",
+      "areaServed": "Global",
+      "provider": {
+        "@type": "Organization",
+        "name": "MGDG Private Ltd",
+        "location": "Neutral Jurisdictions"
+      },
+      "offers": {
+        "@type": "Offer",
+        "description": "Physically allocated bullion title bound to digital ledger."
+      }
+    }
+    </script>
+
+    <!-- Tailwind & Fonts -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&family=Archivo:wght@900&display=swap" rel="stylesheet">
     
-    <!-- CSS -->
+    <!-- External Style -->
     <link rel="stylesheet" href="./styles/index.css">
     
-    <!-- Icons Library -->
+    <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
+  <script type="importmap">
+{
+  "imports": {
+    "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react": "https://esm.sh/react@^19.2.4"
+  }
+}
+</script>
 </head>
-<body>
-
-    <!-- Navbar -->
-    <nav class="navbar">
+  <body>
+    <div class="app-wrapper">
+      <!-- Navbar -->
+      <nav class="navbar" role="navigation" aria-label="Main Navigation">
         <div class="nav-container">
-            <div class="nav-logo" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
-                <img src="./images/logo.png" alt="MGDG Logo" class="nav-logo-img">
-                <span class="logo-text gold-text">MGDG</span>
+          <div class="nav-logo" id="logo-home" aria-label="MGDG Home">
+            <div class="nav-logo-img flex items-center justify-center bg-stone-900 border border-stone-800 rounded">
+              <span class="gold-text font-black text-xl leading-none">M</span>
             </div>
-            
-            <div class="nav-links desktop-only">
-                <a href="#why-gold">01. Why Gold</a>
-                <a href="#difference">02. The Difference</a>
-                <a href="#intelligence">03. Protocol Intelligence</a>
-                <button class="btn-primary" onclick="scrollToSection('waitlist')">Access Queue</button>
-            </div>
+            <span class="logo-text gold-text">MGDG</span>
+          </div>
+          
+          <div class="nav-links hidden lg:flex">
+            <button data-scroll="why-gold" aria-label="Learn about the value of gold">01. Why Gold</button>
+            <button data-scroll="difference" aria-label="View our protocol foundation">02. The Foundation</button>
+            <button data-scroll="intelligence" aria-label="View our security standards">03. Security Standards</button>
+            <button class="btn-primary" data-scroll="waitlist" aria-label="Join the access queue">Access Queue</button>
+          </div>
 
-            <button class="mobile-menu-toggle" id="menuToggle">
-                <i data-lucide="menu"></i>
-            </button>
+          <button class="lg:hidden text-white p-2" id="menu-toggle-btn" aria-label="Toggle Menu">
+            <i data-lucide="menu" id="menu-icon"></i>
+            <i data-lucide="x" id="close-icon" class="hidden"></i>
+          </button>
         </div>
 
         <!-- Mobile Menu -->
-        <div class="mobile-menu" id="mobileMenu">
-            <a href="#why-gold" onclick="toggleMenu()">Why Gold</a>
-            <a href="#difference" onclick="toggleMenu()">The Difference</a>
-            <a href="#intelligence" onclick="toggleMenu()">Protocol Intelligence</a>
-            <button class="btn-primary" onclick="scrollToSection('waitlist'); toggleMenu()">Access Queue</button>
+        <div class="mobile-menu lg:hidden" id="mobile-menu" aria-hidden="true">
+          <button data-scroll="why-gold" class="text-left font-black uppercase text-xs mono-label text-stone-300">01. Why Gold</button>
+          <button data-scroll="difference" class="text-left font-black uppercase text-xs mono-label text-stone-300">02. The Foundation</button>
+          <button data-scroll="intelligence" class="text-left font-black uppercase text-xs mono-label text-stone-300">03. Security Standards</button>
+          <button class="btn-primary w-full py-4" data-scroll="waitlist">Access Queue</button>
         </div>
-    </nav>
+      </nav>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-bg">
-            <img src="https://images.unsplash.com/photo-1610375461246-83df859d849d?auto=format&fit=crop&q=80&w=2000" alt="Gold">
+      <main id="main-content">
+        <!-- Hero Section -->
+        <section class="hero" aria-labelledby="hero-heading">
+          <div class="hero-bg">
+            <img 
+              src="https://images.unsplash.com/photo-1610375461246-83df859d849d?auto=format&fit=crop&q=80&w=2000" 
+              alt="MGDG Reserve Gold Bars - Secure Asset Storage Illustration" 
+              loading="eager"
+            />
             <div class="hero-overlay"></div>
-        </div>
+          </div>
 
-        <div class="hero-content container">
+          <div class="container">
             <div class="hero-grid">
-                <div class="hero-text-block">
-                    <div class="badge">Pre-Launch Beta Phase: Feb 2025</div>
-                    <h1 class="hero-title">
-                        Secure Your Future with <br>
-                        <span class="gold-text italic serif">Timeless Resilience.</span>
-                    </h1>
-                    <p class="hero-subtext">
-                        Experience the stability of physical gold with the ease of a modern digital interface. MGDG provides 1:1 physically allocated gold, stored in Tier-1 global vaults.
-                    </p>
-                    <div class="hero-btns">
-                        <button class="btn-gold" onclick="scrollToSection('waitlist')">
-                            Reserve Early Access <i data-lucide="chevron-right"></i>
-                        </button>
-                        <button class="btn-outline" onclick="scrollToSection('why-gold')">
-                            Learn Why Gold
-                        </button>
-                    </div>
-                </div>
-
-                <div class="hero-dashboard desktop-only">
-                    <div class="dashboard-card">
-                        <div class="dashboard-header">
-                            <p class="dash-label">Institutional Valuation</p>
-                            <p class="dash-value">$2,742.15 / oz</p>
-                        </div>
-                        <div class="dash-stats">
-                            <div class="dash-stat-row">
-                                <span>Reserve Ratio</span>
-                                <span class="gold-text">1:1 PHYSICAL</span>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill"></div>
-                            </div>
-                        </div>
-                        <div class="dash-footer">
-                            <div class="pulse-dot"></div>
-                            <span>Vault Status: Live & Audited</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Why Gold Section -->
-    <section id="why-gold" class="why-gold">
-        <div class="section-header container">
-            <p class="sub-label gold-text">Educational Pillar</p>
-            <h2 class="section-title">Why Gold Remains the <br>Ultimate Store of Value</h2>
-        </div>
-
-        <div class="feature-row container">
-            <div class="feature-text">
-                <span class="giant-bg-text">5K</span>
-                <div class="feature-icon-row">
-                    <i data-lucide="trending-up" class="gold-text"></i>
-                    <span class="mono-label">Historical Evidence</span>
-                </div>
-                <h3 class="feature-h3">Resilience Against Inflation.</h3>
-                <p class="feature-p">
-                    While fiat currencies lose purchasing power over time, gold has maintained its value for over 5,000 years. It is the only asset that is not someone else's liability.
+              <div class="hero-text-block">
+                <div class="badge" role="status">Pre-Launch Beta Phase: FEB 2025</div>
+                <h1 id="hero-heading" class="hero-title uppercase font-extrabold mb-10">
+                  Secure Your Future with <br />
+                  <span class="gold-text italic serif">Timeless Resilience.</span>
+                </h1>
+                <p class="hero-subtext">
+                  Experience the stability of physical gold with the ease of a modern digital interface. MGDG provides 1:1 physically allocated gold, stored in Tier-1 global vaults.
                 </p>
-                <div class="stat-box">
-                    <p class="mono-label">Purchasing Power Metric</p>
-                    <p class="white-serif">1oz Gold in 1925 = 1oz Gold in 2025</p>
+                <div class="hero-btns flex gap-4 mt-8">
+                  <button class="btn-primary !text-[12px] !py-4 !px-8 lg:!text-[14px] lg:!py-5 lg:!px-10" data-scroll="waitlist">
+                    Reserve Early Access <i data-lucide="chevron-right" class="ml-2 inline-block"></i>
+                  </button>
+                  <button class="btn-outline !text-[12px] !py-4 !px-8 lg:!text-[14px] lg:!py-5 lg:!px-10" data-scroll="why-gold">
+                    Learn Why Gold
+                  </button>
                 </div>
+              </div>
+
+              <div class="hidden lg:block dashboard-card relative z-10" aria-label="Market Data Preview">
+                <div class="dashboard-header mb-8 text-left">
+                  <p class="dash-label">Institutional Valuation</p>
+                  <p class="dash-value text-white" aria-live="polite">$2,742.15 / oz</p>
+                </div>
+                <div class="dash-stats">
+                  <div class="flex justify-between items-center mb-2">
+                    <span class="dash-label">Reserve Ratio</span>
+                    <span class="gold-text font-black text-[10px] tracking-widest">1:1 PHYSICAL</span>
+                  </div>
+                  <div class="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-fill"></div>
+                  </div>
+                </div>
+                <div class="dash-footer mt-6">
+                  <div class="pulse-dot"></div>
+                  <span>Vault Status: Live & Audited</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 1. Why Gold -->
+        <section id="why-gold" class="why-gold" aria-labelledby="why-gold-heading">
+          <div class="section-header container text-center">
+            <h2 id="why-gold-heading" class="section-title">The Value of Gold</h2>
+          </div>
+
+          <div class="feature-row container">
+            <div class="feature-text">
+              <span class="giant-bg-text" aria-hidden="true">5K</span>
+              <div class="flex items-center gap-4 mb-8">
+                <i data-lucide="trending-up" class="gold-text" size="32"></i>
+                <span class="mono-label">Historical Evidence</span>
+              </div>
+              <h3 class="feature-h3">Resilience Against Inflation.</h3>
+              <p class="feature-p">
+                While fiat currencies lose purchasing power over time, gold has maintained its value for over 5,000 years. It is the only asset that is not someone else's liability.
+              </p>
+              <div class="stat-box">
+                <p class="mono-label text-[#78716c] mb-2">Purchasing Power Metric</p>
+                <p class="playfair italic text-xl font-medium">1oz Gold in 1925 = 1oz Gold in 2025</p>
+              </div>
             </div>
             <div class="feature-image">
-                <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=1200" alt="Gold Casting">
+              <img 
+                src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=1200" 
+                alt="Molten gold being poured - manufacturing the timeless asset" 
+                loading="lazy"
+              />
             </div>
-        </div>
-    </section>
+          </div>
+        </section>
 
-    <!-- The Difference Section -->
-    <section id="difference" class="difference">
-        <div class="container">
+        <!-- 2. Foundation -->
+        <section id="difference" class="difference" aria-labelledby="foundation-heading">
+          <div class="container">
             <div class="diff-header">
-                <h2 class="giant-title">Physical <br>Allocation.</h2>
-                <div class="title-line"></div>
-                <p class="sub-label gold-text">The Institutional Difference</p>
+              <h2 id="foundation-heading" class="giant-title">Our <br /> <span>Foundation</span></h2>
+              <div class="title-line"></div>
             </div>
 
             <div class="diff-grid">
-                <div class="diff-card">
-                    <i data-lucide="scan" class="gold-text icon-lg"></i>
-                    <h3>1:1 Physical Allocation</h3>
-                    <p>Every gram of MGDG represents a specific bullion bar in custody. You receive a digital title bound to physical weight.</p>
-                </div>
-                <div class="diff-card">
-                    <i data-lucide="database" class="gold-text icon-lg"></i>
-                    <h3>Sovereign-Grade Custody</h3>
-                    <p>We utilize private, non-bank vaults in neutral jurisdictions to ensure your assets remain outside the traditional system.</p>
-                </div>
-                <div class="diff-card">
-                    <i data-lucide="zap" class="gold-text icon-lg"></i>
-                    <h3>24/7 Global Connectivity</h3>
-                    <p>MGDG is integrated with leading bullion liquidity providers for instant exit capability into 30+ fiat currencies.</p>
-                </div>
+              <div class="diff-card">
+                <i data-lucide="scan" class="gold-text mb-8" size="36"></i>
+                <h3 class="uppercase font-black">1:1 Physical Allocation</h3>
+                <p class="text-stone-400 font-light leading-relaxed">Every gram of MGDG represents a specific bullion bar in custody. You receive a digital title bound to physical weight.</p>
+              </div>
+              <div class="diff-card">
+                <i data-lucide="database" class="gold-text mb-8" size="36"></i>
+                <h3 class="uppercase font-black">Sovereign-Grade Custody</h3>
+                <p class="text-stone-400 font-light leading-relaxed">We utilize private, non-bank vaults in neutral jurisdictions to ensure your assets remain outside the traditional system.</p>
+              </div>
+              <div class="diff-card">
+                <i data-lucide="zap" class="gold-text mb-8" size="36"></i>
+                <h3 class="uppercase font-black">24/7 Global Connectivity</h3>
+                <p class="text-stone-400 font-light leading-relaxed">MGDG is integrated with leading bullion liquidity providers for instant exit capability into 30+ fiat currencies.</p>
+              </div>
             </div>
-        </div>
-    </section>
+          </div>
+        </section>
 
-    <!-- Protocol Intelligence Dashboard -->
-    <section id="intelligence" class="intelligence">
-        <div class="container text-center">
-            <h2 class="giant-title mb-8">Protocol Intelligence.</h2>
-            <p class="mono-label mb-16">Technical and institutional security frameworks of MGDG.</p>
+        <!-- 3. Security Standards -->
+        <section id="intelligence" class="intelligence" aria-labelledby="security-heading">
+          <div class="container text-center mb-20">
+            <h2 id="security-heading" class="giant-title mb-8">Security Standards.</h2>
+            <p class="mono-label text-stone-500">Rigorous frameworks ensuring your assets remain safe and verifiable.</p>
+          </div>
 
-            <div class="intel-grid">
-                <div class="intel-card">
-                    <i data-lucide="shield-check" class="gold-text"></i>
-                    <h4>Legal Custody Protocol</h4>
-                    <p>Physical title is legally bound to the asset holder, independent of corporate solvency.</p>
-                </div>
-                <div class="intel-card">
-                    <i data-lucide="server" class="gold-text"></i>
-                    <h4>Atomic Reserve Audit</h4>
-                    <p>Real-time verification logs synchronizing physical inventory with digital ledger allocation.</p>
-                </div>
-                <div class="intel-card">
-                    <i data-lucide="fingerprint" class="gold-text"></i>
-                    <h4>Access Control Grid</h4>
-                    <p>Multi-factor institutional authentication requiring biometric and cryptographic handshakes.</p>
-                </div>
-                <div class="intel-card">
-                    <i data-lucide="database" class="gold-text"></i>
-                    <h4>Liquidity Router</h4>
-                    <p>Dynamic routing to Tier-1 bullion markets for instant execution across global markets.</p>
-                </div>
+          <div class="intel-grid">
+            <div class="intel-card group">
+              <div class="intel-card-bg">
+                <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&q=80&w=800" alt="Legal Protocols" loading="lazy" />
+              </div>
+              <div class="intel-card-overlay"></div>
+              <div class="intel-card-content">
+                <i data-lucide="shield-check" class="gold-text mb-6" size="36"></i>
+                <h4>Legal Custody Protocol</h4>
+                <p>Physical title is legally bound to the asset holder, independent of corporate solvency.</p>
+              </div>
             </div>
-        </div>
-    </section>
+            <div class="intel-card group">
+              <div class="intel-card-bg">
+                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800" alt="Audits" loading="lazy" />
+              </div>
+              <div class="intel-card-overlay"></div>
+              <div class="intel-card-content">
+                <i data-lucide="server" class="gold-text mb-6" size="36"></i>
+                <h4>Atomic Reserve Audit</h4>
+                <p>Real-time verification logs synchronizing physical inventory with digital ledger allocation.</p>
+              </div>
+            </div>
+            <div class="intel-card group">
+              <div class="intel-card-bg">
+                <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800" alt="Security" loading="lazy" />
+              </div>
+              <div class="intel-card-overlay"></div>
+              <div class="intel-card-content">
+                <i data-lucide="fingerprint" class="gold-text mb-6" size="36"></i>
+                <h4>Access Control Grid</h4>
+                <p>Multi-factor institutional authentication requiring biometric and cryptographic handshakes.</p>
+              </div>
+            </div>
+            <div class="intel-card group">
+              <div class="intel-card-bg">
+                <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=800" alt="Liquidity" loading="lazy" />
+              </div>
+              <div class="intel-card-overlay"></div>
+              <div class="intel-card-content">
+                <i data-lucide="database" class="gold-text mb-6" size="36"></i>
+                <h4>Liquidity Router</h4>
+                <p>Dynamic routing to Tier-1 bullion markets for instant execution across global markets.</p>
+              </div>
+            </div>
+          </div>
+        </section>
 
-    <!-- Lead Capture -->
-    <section id="waitlist" class="waitlist">
-        <div class="container waitlist-container">
+        <!-- Lead Capture -->
+        <section id="waitlist" class="waitlist container" aria-labelledby="waitlist-heading">
+          <div class="waitlist-container">
             <div class="waitlist-manifesto">
-                <h2 class="waitlist-title">The MGDG Reserve.</h2>
-                <p class="gold-text mono-label mb-12">Phase_01 Access Control</p>
-                <div class="waitlist-text">
-                    <p>Our Google App officially launches in Late March 2025. Early access is granted in phases.</p>
-                </div>
+              <h2 id="waitlist-heading" class="waitlist-title leading-[0.9]">The MGDG Reserve.</h2>
+              <p class="gold-text mono-label mb-8 lg:mb-12">Phase_01 Access Control</p>
+              <div class="text-stone-400 italic font-light text-lg">
+                <p>Our institutional interface officially launches Late March 2026. Early access is granted in phases.</p>
+              </div>
             </div>
 
-            <div class="waitlist-form-container">
-                <span class="bg-reserve-text">RESERVE</span>
-                
-                <div id="successMessage" class="success-message hidden">
-                    <i data-lucide="shield-check" class="gold-text icon-xl"></i>
-                    <h3>Access Granted.</h3>
-                    <p>You are on the MGDG Reserve list. Your Gold Primer is on its way.</p>
+            <div class="waitlist-form-container" id="waitlist-wrapper">
+              <span class="bg-reserve-text" aria-hidden="true">RESERVE</span>
+              
+              <form id="lead-form" class="relative z-10" aria-label="Reserve Queue Signup Form">
+                <div class="input-group">
+                  <label class="mono-label" for="name">Name</label>
+                  <input id="name" type="text" required placeholder="Enter Full Name" autoComplete="name" />
                 </div>
+                <div class="input-group">
+                  <label class="mono-label" for="email">Email</label>
+                  <input id="email" type="email" required placeholder="Enter Email Address" autoComplete="email" />
+                </div>
+                <button type="submit" class="btn-submit" aria-label="Submit Interest Form">
+                  Indicate Interest <i data-lucide="arrow-right" class="ml-4 inline-block"></i>
+                </button>
+              </form>
 
-                <form id="leadForm" class="waitlist-form">
-                    <div class="input-group">
-                        <label class="mono-label">Legal Name</label>
-                        <input type="text" id="name" required placeholder="Jane Doe">
-                    </div>
-                    <div class="input-group">
-                        <label class="mono-label">Email Dossier</label>
-                        <input type="email" id="email" required placeholder="jane@example.com">
-                    </div>
-                    <button type="submit" class="btn-submit">
-                        Activate Priority Queue <i data-lucide="arrow-right"></i>
-                    </button>
-                </form>
+              <div id="success-screen" class="hidden text-center py-10 relative z-10" role="alert">
+                <i data-lucide="shield-check" class="gold-text mx-auto mb-10" size="80"></i>
+                <h3 class="text-4xl font-black text-white mb-6 uppercase tracking-tighter">Access Granted.</h3>
+                <p class="text-stone-400 text-xl font-light italic">You are on the MGDG Reserve list. Your Gold Primer is on its way.</p>
+              </div>
             </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- Footer -->
+      <footer class="footer bg-stone-950 pb-20 pt-0 px-6" role="contentinfo">
+        <div class="max-w-[1400px] mx-auto flex flex-col items-center justify-center text-center">
+          <div class="w-[85%] h-[1px] bg-stone-800 mb-16"></div>
+          <div class="flex flex-col items-center gap-8">
+            <div class="flex flex-col items-center">
+              <div class="nav-logo transition-opacity hover:opacity-80" id="footer-logo" aria-label="Back to Top">
+                <div class="nav-logo-img flex items-center justify-center bg-stone-900 border border-stone-800 rounded">
+                  <span class="gold-text font-black text-xl leading-none">M</span>
+                </div>
+                <span class="logo-text text-stone-300 ml-2">MGDG</span>
+              </div>
+              <p class="mono-label text-stone-500 text-[10px] mt-6 tracking-[0.5em] uppercase">Secure Digital Asset Management Protocol</p>
+            </div>
+            <div class="h-[1px] w-24 bg-stone-900 my-2"></div>
+            <div class="flex flex-col gap-4 items-center">
+              <p class="text-stone-400 text-[10px] font-black uppercase tracking-[0.3em] mono">© 2025 MGDG PRIVATE LTD.</p>
+              <div class="flex gap-8">
+                <button class="text-[9px] uppercase tracking-[0.2em] text-stone-600 hover:text-stone-400 transition-colors">Privacy Protocol</button>
+                <button class="text-[9px] uppercase tracking-[0.2em] text-stone-600 hover:text-stone-400 transition-colors">Terms of Custody</button>
+              </div>
+            </div>
+          </div>
         </div>
-    </section>
-
+      </footer>
+    </div>
     
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container footer-content">
-            <div class="footer-logo-block">
-                <div class="nav-logo">
-                    <img src="./images/logo.png" alt="MGDG Logo" class="footer-logo-img">
-                    <span class="logo-text">MGDG</span>
-                </div>
-                <p class="mono-label footer-tagline">Secure Digital Gold Asset Management Protocol.</p>
-            </div>
-            <p class="footer-copyright">© 2025 MGDG PRIVATE LTD.</p>
-        </div>
-    </footer>
-
-    <!-- JS -->
+    <!-- External JS -->
     <script src="./scripts/index.js"></script>
-</body>
+  </body>
 </html>
