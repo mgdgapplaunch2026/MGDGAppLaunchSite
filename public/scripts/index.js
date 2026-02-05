@@ -72,3 +72,55 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
+
+
+const GOLD_API_KEY = "goldapi-cmzeglsml8zuwsr-io";
+const CACHE_KEY = "mgdg_gold_data";
+const CACHE_DURATION = 12 * 60 * 60 * 1000; // 12 hours in milliseconds
+
+async function updateGoldPrice() {
+    const priceDisplay = document.querySelector('.dash-value');
+    const now = Date.now();
+    
+    // 1. Try to get data from LocalStorage
+    const cached = localStorage.getItem(CACHE_KEY);
+    if (cached) {
+        const { price, timestamp } = JSON.parse(cached);
+        // If the data is less than 12 hours old, use it and STOP
+        if (now - timestamp < CACHE_DURATION) {
+            console.log("MGDG: Using cached market data to save API credits.");
+            priceDisplay.innerText = `$${price.toLocaleString()} / oz`;
+            return;
+        }
+    }
+
+    // 2. If no cache or cache expired, fetch from GoldAPI
+    console.log("MGDG: Cache expired. Fetching live market data...");
+    try {
+        const response = await fetch("https://www.goldapi.io/api/XAU/USD", {
+            headers: {
+                "x-access-token": GOLD_API_KEY,
+                "Content-Type": "application/json"
+            }
+        });
+        
+        const data = await response.json();
+        
+        if (data.price) {
+            const currentPrice = data.price;
+            priceDisplay.innerText = `$${currentPrice.toLocaleString()} / oz`;
+            
+            // 3. Save to LocalStorage for next time
+            localStorage.setItem(CACHE_KEY, JSON.stringify({
+                price: currentPrice,
+                timestamp: now
+            }));
+        }
+    } catch (error) {
+        console.error("MGDG Market Feed Error:", error);
+        // If it fails, the HTML stays at your default $2,742.15
+    }
+}
+
+// Only run once when the page loads
+updateGoldPrice();

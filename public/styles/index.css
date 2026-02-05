@@ -335,9 +335,6 @@ body {
 .btn-submit { width: 100%; background: var(--amber-500); color: var(--stone-950); padding: 1.5rem; border: none; font-weight: 900; font-family: 'JetBrains Mono', monospace; font-size: 12px; text-transform: uppercase; letter-spacing: 0.4em; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 1rem; transition: 0.3s; }
 .btn-submit:hover { background: var(--amber-400); box-shadow: 0 0 20px rgba(245, 158, 11, 0.3); }
 
-/* Animation Utility */
-.hidden { display: none !important; }
-
 /* Responsive Adjustments */
 @media (max-width: 1024px) {
   .hero-grid { grid-template-columns: 1fr; gap: 3rem; }
