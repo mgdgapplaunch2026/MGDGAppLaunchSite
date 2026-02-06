@@ -56,71 +56,98 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Waitlist Form Handling
-  const leadForm = document.getElementById('lead-form');
-  const successScreen = document.getElementById('success-screen');
+    const leadForm = document.getElementById('lead-form');
+    const successScreen = document.getElementById('success-screen');
 
-  leadForm?.addEventListener('submit', (e) => {
-    e.preventDefault();
-    
-    // Simulate submission
-    leadForm.classList.add('hidden');
-    successScreen?.classList.remove('hidden');
-    
-    // Smooth scroll into view if on mobile
-    if (window.innerWidth < 1024) {
-      successScreen.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-  });
+    leadForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const formData = {
+            name: document.getElementById('name').value,
+            email: document.getElementById('email').value
+        };
+
+        try {
+            const response = await fetch('/api/v1/leads', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                leadForm.classList.add('hidden');
+                successScreen.classList.remove('hidden');
+                console.log("MGDG Reserve: New entry verified.");
+            } else {
+                alert(result.message); // Handle 'already exists' or errors
+            }
+        } catch (error) {
+            console.error("MGDG Protocol Error:", error);
+        }
+    });
 });
 
 
 const GOLD_API_KEY = "goldapi-cmzeglsml8zuwsr-io";
-const CACHE_KEY = "mgdg_gold_data";
-const CACHE_DURATION = 12 * 60 * 60 * 1000; // 12 hours in milliseconds
+const CACHE_KEY = "mgdg_gold_market_data";
+const CACHE_HOURS = 12;
 
-async function updateGoldPrice() {
+async function updateInstitutionalValuation() {
     const priceDisplay = document.querySelector('.dash-value');
+    if (!priceDisplay) return;
+
     const now = Date.now();
-    
-    // 1. Try to get data from LocalStorage
-    const cached = localStorage.getItem(CACHE_KEY);
-    if (cached) {
-        const { price, timestamp } = JSON.parse(cached);
-        // If the data is less than 12 hours old, use it and STOP
-        if (now - timestamp < CACHE_DURATION) {
-            console.log("MGDG: Using cached market data to save API credits.");
-            priceDisplay.innerText = `$${price.toLocaleString()} / oz`;
+    const cachedData = localStorage.getItem(CACHE_KEY);
+
+    // 1. Check for valid cache
+    if (cachedData) {
+        const { price, timestamp } = JSON.parse(cachedData);
+        if (now - timestamp < CACHE_HOURS * 60 * 60 * 1000) {
+            console.log("MGDG Protocol: Utilizing cached sovereign-grade market data.");
+            displayPrice(price, priceDisplay);
             return;
         }
     }
 
-    // 2. If no cache or cache expired, fetch from GoldAPI
-    console.log("MGDG: Cache expired. Fetching live market data...");
+    // 2. Fetch if no cache or expired
     try {
+        console.log("MGDG Protocol: Establishing secure link to GoldAPI.io...");
         const response = await fetch("https://www.goldapi.io/api/XAU/USD", {
             headers: {
                 "x-access-token": GOLD_API_KEY,
                 "Content-Type": "application/json"
             }
         });
-        
+
+        if (!response.ok) throw new Error('API Rate Limit or Connection Error');
+
         const data = await response.json();
         
         if (data.price) {
-            const currentPrice = data.price;
-            priceDisplay.innerText = `$${currentPrice.toLocaleString()} / oz`;
+            displayPrice(data.price, priceDisplay);
             
-            // 3. Save to LocalStorage for next time
+            // 3. Update Cache
             localStorage.setItem(CACHE_KEY, JSON.stringify({
-                price: currentPrice,
+                price: data.price,
                 timestamp: now
             }));
         }
     } catch (error) {
-        console.error("MGDG Market Feed Error:", error);
-        // If it fails, the HTML stays at your default $2,742.15
+        console.error("MGDG Alert: Market Feed Interrupted.", error);
+        // Fallback is handled by the static HTML value ($2,742.15)
     }
 }
 
-// Only run once when the page loads
-updateGoldPrice();
+function displayPrice(price, element) {
+    const formatted = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+    }).format(price);
+    
+    element.innerText = `${formatted} / oz`;
+}
+
+// Execute on load
+document.addEventListener('DOMContentLoaded', updateInstitutionalValuation);
