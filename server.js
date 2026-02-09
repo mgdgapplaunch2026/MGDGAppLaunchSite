@@ -1,13 +1,15 @@
+// INITIALIZE ENVIRONMENT FIRST
+require('dotenv').config(); 
+
+// NOW REQUIRE OTHER MODULES
 const express = require('express');
 const cors = require('cors'); 
 const path = require('path');
-const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const dns = require('dns');
-const leadRoutes = require('./routes/leadroutes');
+const leadRoutes = require('./routes/leadroutes'); // Now this will see the API Key!
 
 // 1. CONFIGURATION
-dotenv.config();
 dns.setServers(['8.8.8.8', '1.1.1.1']); // Force reliable DNS for Atlas
 
 const app = express();
